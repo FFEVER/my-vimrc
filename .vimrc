@@ -36,10 +36,12 @@ Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 call plug#end()
+
 " ------------- key map setting -------------------
 nnoremap <leader>sr :source ~/.vimrc<CR>
 nnoremap <leader>w :w<CR>
-map      <leader>q :q<CR>
+" map      <leader>q :q<CR>
+map <leader>q :bd<CR>
 map      <leader>a :Ag<CR>
 noremap  <leader>find :FZF<CR>
 noremap  <S-w> <C-w>
@@ -53,6 +55,7 @@ nnoremap H <s-^>
 vnoremap H <s-^>
 noremap  <leader>/ :Commentary<CR>
 inoremap jj <Esc>
+
 " buffer handling
 nnoremap  <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
 nnoremap  <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
@@ -69,6 +72,7 @@ nmap ga <Plug>(EasyAlign)
 autocmd StdinReadPre * let s:std_in=1 " auto startup nerdtree on open
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif " auto startup nerdtree on open
 autocmd BufWritePre *.rb :%s/\s\+$//e
+
 set encoding=utf-8 " file encode
 set laststatus=2
 set tabstop=2 " change tab width
@@ -86,9 +90,16 @@ set wildmenu
 set noswapfile
 set background=dark
 set termguicolors
-let g:airline_theme='quantum'
+set ttyfast
+set lazyredraw
+set nocursorline
+set norelativenumber
+" set regexpengine=1 " use old engine
+set regexpengine=2 " use new engine
 colorscheme quantum
 syntax on
+set synmaxcol=128
+syntax sync minlines=256
 
 " plugin setting
 " ---------------- NERDTree ---------------------
@@ -96,6 +107,7 @@ let NERDTreeMinimalUI        = 1
 let NERDTreeDirArrows        = 1
 let NERDTreeAutoDeleteBuffer = 1
 nnoremap <leader>d :NERDTreeToggle<CR>
+nnoremap <leader>f :NERDTreeFind<CR>
 let NERDTreeQuitOnOpen = 1
 " :let g:NERDTreeWinSize=50
 
@@ -121,7 +133,8 @@ let g:ale_fixers = {
       \  'python': ['autopep8', 'pylint'],
       \  'scss': ['prettier'],
       \  'sass': ['prettier'],
-      \  'ruby': ['rubocop'],
+      \  'css': ['prettier'],
+      \  'ruby': ['rubocop']
       \}
 let g:ale_fix_on_save        = 0
 let g:ale_set_highlights     = 1
@@ -140,3 +153,9 @@ let g:gitgutter_highlight_lines = 0
 let g:UltiSnipsExpandTrigger = "<tab>"
 " ----------------- vim move ----------------------
 let g:move_key_modifier = 'C'
+
+
+" if your vim seem slow run the following commend to find the culprits
+" 1) :syntime on
+" 2) do things that is slow
+" 3) :syntime report
